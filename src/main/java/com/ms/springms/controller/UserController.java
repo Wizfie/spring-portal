@@ -39,7 +39,7 @@ public class UserController {
             String result = userService.register(userInfo);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (DuplicateEntryException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Awards Already Exist" + e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>("Error: Unable to Register. Please try again later.", HttpStatus.INTERNAL_SERVER_ERROR);
         }

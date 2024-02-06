@@ -18,11 +18,11 @@ public class Awards {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name_award")
+    @Column(name = "name_award" ,unique = true)
     private String nameAward;
 
-    @Column(name = "date_award")
-    private Date dateAward;
+    @Column(name = "description")
+    private String description;
 
 
 

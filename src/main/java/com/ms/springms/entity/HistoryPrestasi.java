@@ -1,9 +1,15 @@
 package com.ms.springms.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "history_presstasi")
+@Table(name = "history_prestasi")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class HistoryPrestasi {
 
     @Id
