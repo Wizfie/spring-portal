@@ -23,6 +23,17 @@ public class Team {
     @JoinColumn(name = "id_award")
     private Awards awards;
 
+    public Long getIdAward() {
+        return awards != null ? awards.getId() : null;
+    }
+
+    public void setIdAward(Long idAward) {
+        if (awards == null) {
+            awards = new Awards();
+        }
+        awards.setId(idAward);
+    }
+
 
 
 
