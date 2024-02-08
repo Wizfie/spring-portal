@@ -1,4 +1,4 @@
-package com.ms.springms.service;
+package com.ms.springms.service.team;
 
 import com.ms.springms.Exceptions.DuplicateEntryException;
 import com.ms.springms.entity.Awards;
@@ -7,6 +7,8 @@ import com.ms.springms.repository.AwardRepository;
 import com.ms.springms.repository.team.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class TeamService {
@@ -17,17 +19,19 @@ public class TeamService {
     @Autowired
     private AwardRepository awardRepository;
 
-    public String createTeam(Team team){
+    public Team createTeam(Team team){
 
         String nameTeam = team.getNameTeam();
         Long idAward = team.getIdAward();
+        Long idUser = team.getIdUser();
 
         try {
             if (nameTeam != null && !nameTeam.isBlank()){
 
                 Team newTeam = new Team();
 
-                newTeam.setNameTeam(team.getNameTeam());
+                newTeam.setNameTeam(nameTeam);
+                newTeam.setIdUser(idUser);
 
 
 
@@ -36,13 +40,13 @@ public class TeamService {
                 if (award != null){
                     newTeam.setAwards(award);
                 teamRepository.save(newTeam);
-                return "Team Created";
+                return newTeam;
 
                 }else {
-                    return "error id_award null";
+                    throw  new IllegalArgumentException("error id_award null") ;
                 }
-            }else {
-                return "Error Created Team";
+                }else {
+                    throw  new IllegalArgumentException("error create Team") ;
             }
         } catch (DuplicateEntryException ex){
             if (ex.getMessage().contains("Duplicate Entry")){
@@ -50,11 +54,19 @@ public class TeamService {
                 throw new  DuplicateEntryException("Team Already Exist");
             } else {
                 System.out.println("Data integrity violation exception: " + ex.getMessage());
-                return "Error: Please try again later.";
+                    throw  new IllegalArgumentException("Error: Please try again later.") ;
 
             }
         }
 
+    }
+
+    public List<Team> getAllTeam(){
+        try {
+            return teamRepository.findAll();
+        } catch (Exception ex){
+            throw  new RuntimeException("Error get Team " + ex.getMessage());
+        }
     }
 
 }

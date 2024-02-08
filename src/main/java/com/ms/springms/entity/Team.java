@@ -19,6 +19,8 @@ public class Team {
     @Column(name = "name_team")
     private String nameTeam;
 
+    @Column(name ="id_user")
+    private Long idUser;
     @ManyToOne
     @JoinColumn(name = "id_award")
     private Awards awards;

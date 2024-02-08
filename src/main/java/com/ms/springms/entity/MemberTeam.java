@@ -27,6 +27,15 @@ public class MemberTeam {
     @JoinColumn(name = "id_team")
     private Team team;
 
+    public Long getIdTeam(){return  team != null ? team.getId() : null;}
+
+    public void setIdTeam(Long idTeam){
+        if (team == null){
+            team = new Team();
+        }
+        team.setId(idTeam);
+    }
+
 
 
 
