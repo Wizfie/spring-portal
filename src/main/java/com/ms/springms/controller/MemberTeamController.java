@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/member")
 public class MemberTeamController {
 
 
@@ -18,7 +18,7 @@ public class MemberTeamController {
     private MemberTeamService memberTeamService;
 
 
-    @PostMapping("/add-member-team")
+    @PostMapping("/add")
     public ResponseEntity<?> addMember(@RequestBody MemberTeam memberTeam){
 
         try {
@@ -33,7 +33,7 @@ public class MemberTeamController {
 
     }
 
-    @GetMapping("/get-all-member-team")
+    @GetMapping("/get-all")
     public List<MemberTeam> getAllMember(){
         return memberTeamService.getAllMember();
     }

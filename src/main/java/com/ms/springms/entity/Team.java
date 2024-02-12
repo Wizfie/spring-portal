@@ -1,42 +1,51 @@
-package com.ms.springms.entity;
+    package com.ms.springms.entity;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+    import com.fasterxml.jackson.annotation.JsonIgnore;
+    import jakarta.persistence.*;
+    import lombok.AllArgsConstructor;
+    import lombok.Data;
+    import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "team")
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class Team {
+    import java.util.List;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Entity
+    @Table(name = "team")
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public class Team {
 
-    @Column(name = "name_team")
-    private String nameTeam;
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
 
-    @Column(name ="id_user")
-    private Long idUser;
-    @ManyToOne
-    @JoinColumn(name = "id_award")
-    private Awards awards;
+        @Column(name = "name_team")
+        private String nameTeam;
 
-    public Long getIdAward() {
-        return awards != null ? awards.getId() : null;
-    }
+        @Column(name ="id_user")
+        private Long idUser;
 
-    public void setIdAward(Long idAward) {
-        if (awards == null) {
-            awards = new Awards();
+        @ManyToOne
+        @JoinColumn(name = "id_award")
+        private Awards awards;
+
+        @OneToMany(mappedBy = "team")
+        @JsonIgnore // Menambahkan anotasi @JsonIgnore untuk menghindari rekursi tak terbatas
+        private List<MemberTeam> members;
+
+
+        public Long getIdAward() {
+            return awards != null ? awards.getId() : null;
         }
-        awards.setId(idAward);
+
+        public void setIdAward(Long idAward) {
+            if (awards == null) {
+                awards = new Awards();
+            }
+            awards.setId(idAward);
+        }
+
+
+
+
     }
-
-
-
-
-}

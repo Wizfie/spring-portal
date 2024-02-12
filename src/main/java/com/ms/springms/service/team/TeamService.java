@@ -3,12 +3,15 @@ package com.ms.springms.service.team;
 import com.ms.springms.Exceptions.DuplicateEntryException;
 import com.ms.springms.entity.Awards;
 import com.ms.springms.entity.Team;
+import com.ms.springms.model.Teams.MemberTeam.MemberDTO;
+import com.ms.springms.model.Teams.TeamWithMembers;
 import com.ms.springms.repository.AwardRepository;
 import com.ms.springms.repository.team.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TeamService {
@@ -69,4 +72,28 @@ public class TeamService {
         }
     }
 
+
+    public List<TeamWithMembers> getTeamWithMembers(){
+        List<Team> teams = teamRepository.findAll();
+        return teams.stream().map(
+                team -> {
+                    TeamWithMembers dto = new TeamWithMembers();
+                    dto.setNameTeam(team.getNameTeam());
+                    dto.setIdUser(String.valueOf(team.getIdUser()));
+                    dto.setIdAward(team.getIdAward());
+
+
+                    List<MemberDTO> members = team.getMembers().stream()
+                            .map(member -> {
+                            MemberDTO memberDTO = new MemberDTO();
+                            memberDTO.setId(member.getId());
+                            memberDTO.setMemberName(member.getNameMember());
+                            memberDTO.setPosition(member.getPosition());
+
+                            return  memberDTO;
+                            }).toList();
+                    dto.setMembers(members);
+                    return dto;
+                }).collect(Collectors.toList());
+    }
 }
