@@ -25,7 +25,6 @@ public class TeamService {
     public Team createTeam(Team team){
 
         String nameTeam = team.getNameTeam();
-        Long idAward = team.getIdAward();
         Long idUser = team.getIdUser();
 
         try {
@@ -36,18 +35,9 @@ public class TeamService {
                 newTeam.setNameTeam(nameTeam);
                 newTeam.setIdUser(idUser);
 
-
-
-                Awards award = awardRepository.findById(idAward).orElse(null);
-
-                if (award != null){
-                    newTeam.setAwards(award);
                 teamRepository.save(newTeam);
                 return newTeam;
 
-                }else {
-                    throw  new IllegalArgumentException("error id_award null") ;
-                }
                 }else {
                     throw  new IllegalArgumentException("error create Team") ;
             }
@@ -80,7 +70,8 @@ public class TeamService {
                     TeamWithMembers dto = new TeamWithMembers();
                     dto.setNameTeam(team.getNameTeam());
                     dto.setIdUser(String.valueOf(team.getIdUser()));
-                    dto.setIdAward(team.getIdAward());
+                    dto.setIdTeam(team.getId());
+
 
 
                     List<MemberDTO> members = team.getMembers().stream()

@@ -13,9 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 public class TeamWithMembers {
 
+    private Long idTeam;
     private String nameTeam;
     private String idUser;
-    private Long idAward;
     private List<MemberDTO> members;
 
 }

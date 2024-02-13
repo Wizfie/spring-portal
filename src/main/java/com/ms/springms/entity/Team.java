@@ -25,27 +25,10 @@
         @Column(name ="id_user")
         private Long idUser;
 
-        @ManyToOne
-        @JoinColumn(name = "id_award")
-        private Awards awards;
+
+
 
         @OneToMany(mappedBy = "team")
         @JsonIgnore // Menambahkan anotasi @JsonIgnore untuk menghindari rekursi tak terbatas
         private List<MemberTeam> members;
-
-
-        public Long getIdAward() {
-            return awards != null ? awards.getId() : null;
-        }
-
-        public void setIdAward(Long idAward) {
-            if (awards == null) {
-                awards = new Awards();
-            }
-            awards.setId(idAward);
-        }
-
-
-
-
     }

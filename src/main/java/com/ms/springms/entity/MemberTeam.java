@@ -19,6 +19,9 @@ public class MemberTeam {
     @Column(name = "name_member")
     private String nameMember;
 
+    @ManyToOne
+    @JoinColumn(name = "id_awards")
+    private Awards awards;
 
     private String position;
 
@@ -29,6 +32,8 @@ public class MemberTeam {
 
     public Long getIdTeam(){return  team != null ? team.getId() : null;}
 
+    public  Long getIdAwards(){return awards != null ? awards.getId(): null;}
+
     public void setIdTeam(Long idTeam){
         if (team == null){
             team = new Team();
@@ -36,7 +41,10 @@ public class MemberTeam {
         team.setId(idTeam);
     }
 
-
-
-
+    public void setIdAwards(Long idAwards){
+        if (awards == null){
+            awards = new Awards();
+        }
+        awards.setId(idAwards);
+    }
 }
