@@ -18,7 +18,7 @@ public class HistoryPrestasi {
 
     @ManyToOne
     @JoinColumn(name = "id_award")
-    private Awards awards;
+    private Event event;
 
 
     @ManyToOne

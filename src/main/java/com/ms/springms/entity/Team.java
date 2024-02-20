@@ -22,6 +22,9 @@
         @Column(name = "name_team")
         private String nameTeam;
 
+        @Column(name = "team_creation_year")
+        private int teamCreationYear;
+
         @Column(name ="id_user")
         private Long idUser;
 

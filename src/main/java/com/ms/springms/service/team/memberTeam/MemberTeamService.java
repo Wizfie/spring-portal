@@ -1,9 +1,8 @@
 package com.ms.springms.service.team.memberTeam;
 
-import com.ms.springms.entity.Awards;
 import com.ms.springms.entity.MemberTeam;
 import com.ms.springms.entity.Team;
-import com.ms.springms.repository.AwardRepository;
+import com.ms.springms.repository.event.EventRepository;
 import com.ms.springms.repository.team.TeamRepository;
 import com.ms.springms.repository.team.memberTeam.MemberTeamRepository;
 import jakarta.transaction.Transactional;
@@ -22,7 +21,7 @@ public class MemberTeamService {
     private MemberTeamRepository memberTeamRepository;
 
     @Autowired
-    private AwardRepository awardRepository;
+    private EventRepository eventRepository;
 
 
     public MemberTeam addMember(MemberTeam memberTeam) {
@@ -31,7 +30,6 @@ public class MemberTeamService {
         String nameMember = memberTeam.getNameMember();
         Long idTeam = memberTeam.getIdTeam();
         String position = memberTeam.getPosition();
-        Long idAwards = memberTeam.getIdAwards();
 
         try {
 
@@ -42,11 +40,9 @@ public class MemberTeamService {
             newMember.setIdTeam(idTeam);
 
             Team team = teamRepository.findById(idTeam).orElse(null);
-            Awards awards = awardRepository.findById(idAwards).orElse(null);
 
-            if (team != null && awards != null){
+            if (team != null){
                 newMember.setTeam(team);
-                newMember.setAwards(awards);
 
                 memberTeamRepository.save(newMember);
                 return newMember;
@@ -75,16 +71,15 @@ public class MemberTeamService {
     @Transactional
     public MemberTeam updateMemberTeam(MemberTeam memberTeam){
 //        Check MemberExist
-        Optional<MemberTeam> existingMember = memberTeamRepository.findById(memberTeam.getId());
+        Optional<MemberTeam> existingMember = memberTeamRepository.findById(memberTeam.getMemberId());
         if (existingMember.isEmpty()){
-            throw  new IllegalArgumentException("Member with Id" + memberTeam.getId() + "Not Found");
+            throw  new IllegalArgumentException("Member with Id" + memberTeam.getMemberId() + "Not Found");
         }
 
 //        update member
         MemberTeam exitingMemberTeam = existingMember.get();
         exitingMemberTeam.setNameMember(memberTeam.getNameMember());
         exitingMemberTeam.setPosition(memberTeam.getPosition());
-        exitingMemberTeam.setAwards(memberTeam.getAwards());
         exitingMemberTeam.setTeam(memberTeam.getTeam());
 
         return memberTeamRepository.save(exitingMemberTeam);

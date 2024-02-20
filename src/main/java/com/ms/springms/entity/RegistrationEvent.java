@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Struct;
 
 @Data
 @AllArgsConstructor
@@ -24,13 +23,19 @@ public class RegistrationEvent {
 
     @ManyToOne
     @JoinColumn(name = "award_id")
-    private Awards awards;
+    private Event event;
 
     @Column(name = "improvement_title")
     private String improvementTitle;
 
     @Column(name = "file_path")
     private String filePath;
+
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "description")
+    private String description;
 
 
 

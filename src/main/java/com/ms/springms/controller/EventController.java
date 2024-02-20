@@ -1,8 +1,8 @@
 package com.ms.springms.controller;
 
 import com.ms.springms.Exceptions.DuplicateEntryException;
-import com.ms.springms.entity.Awards;
-import com.ms.springms.service.awards.AwardsService;
+import com.ms.springms.entity.Event;
+import com.ms.springms.service.event.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,17 +12,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class AwardsController {
+public class EventController {
 
 
     @Autowired
-    private AwardsService awardsService;
+    private EventService eventService;
 
-    @PostMapping("/create-awards")
-    public ResponseEntity<?> createAwards( @RequestBody Awards awards){
+    @PostMapping("/create-event")
+    public ResponseEntity<?> createAwards( @RequestBody Event event){
 
         try {
-            String result = awardsService.createEvent(awards);
+            String result = eventService.createEvent(event);
             return  new ResponseEntity<>(result, HttpStatus.OK);
         } catch (DuplicateEntryException ex){
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
@@ -36,8 +36,8 @@ public class AwardsController {
 
 
     @GetMapping("/get-all-awards")
-    public List<Awards> getAllAwards(){
-        return awardsService.getAllAwards();
+    public List<Event> getAllAwards(){
+        return eventService.getAllAwards();
     }
 
 }
