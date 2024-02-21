@@ -16,7 +16,7 @@ public class EventService {
     private EventRepository eventRepository;
 
 
-    public String createEvent(Event event) {
+    public Event createEvent(Event event) {
 
         String eventName = event.getEventName();
         String eventYear = event.getEventYear();
@@ -28,13 +28,13 @@ public class EventService {
 
                 newEvent.setEventName(eventName);
                 newEvent.setEventYear(eventYear);
-                eventRepository.save(newEvent);
+              Event result =  eventRepository.save(newEvent);
 
                 System.out.println(event);
 
-                return "Event Created";
+                return result;
             } else {
-                return "Name Event cannot be blank";
+                throw new IllegalArgumentException("Name Event Cannot blank");
             }
 
         } catch (DuplicateEntryException ex) {
@@ -44,7 +44,7 @@ public class EventService {
                 throw new DuplicateEntryException("Award Already Exist");
             } else {
                 System.out.println("Data integrity violation exception: " + ex.getMessage());
-                return "Error: Unable to Register. Please try again later.";
+                throw new RuntimeException("Error: Unable to Register. Please try again later.") ;
             }
 
         }

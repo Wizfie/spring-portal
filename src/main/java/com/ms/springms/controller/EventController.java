@@ -22,7 +22,7 @@ public class EventController {
     public ResponseEntity<?> createAwards( @RequestBody Event event){
 
         try {
-            String result = eventService.createEvent(event);
+            Event result = eventService.createEvent(event);
             return  new ResponseEntity<>(result, HttpStatus.OK);
         } catch (DuplicateEntryException ex){
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
