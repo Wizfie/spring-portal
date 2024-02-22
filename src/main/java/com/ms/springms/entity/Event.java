@@ -24,8 +24,6 @@ public class Event {
     @Column(name = "event_year")
     private String eventYear;
 
-//    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-//    private List<Step> steps;
 
 
 

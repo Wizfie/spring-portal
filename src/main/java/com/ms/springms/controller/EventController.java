@@ -2,6 +2,7 @@ package com.ms.springms.controller;
 
 import com.ms.springms.Exceptions.DuplicateEntryException;
 import com.ms.springms.entity.Event;
+import com.ms.springms.model.event.EventWithSteps;
 import com.ms.springms.service.event.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,12 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/event")
 public class EventController {
 
 
     @Autowired
     private EventService eventService;
+
 
     @PostMapping("/create-event")
     public ResponseEntity<?> createAwards( @RequestBody Event event){
@@ -29,9 +31,12 @@ public class EventController {
         } catch (Exception ex){
             return  new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
 
-
-
+    @GetMapping("/get-event")
+    public ResponseEntity<List<EventWithSteps>> getAllEventsWithSteps() {
+        List<EventWithSteps> eventsWithSteps = eventService.getAllEventsWithSteps();
+        return new ResponseEntity<>(eventsWithSteps, HttpStatus.OK);
     }
 
 

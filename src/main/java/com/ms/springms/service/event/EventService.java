@@ -2,11 +2,15 @@ package com.ms.springms.service.event;
 
 import com.ms.springms.Exceptions.DuplicateEntryException;
 import com.ms.springms.entity.Event;
+import com.ms.springms.entity.Step;
+import com.ms.springms.model.event.EventWithSteps;
 import com.ms.springms.repository.event.EventRepository;
+import com.ms.springms.repository.event.StepRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -15,6 +19,8 @@ public class EventService {
     @Autowired
     private EventRepository eventRepository;
 
+    @Autowired
+private StepRepository stepRepository;
 
     public Event createEvent(Event event) {
 
@@ -48,6 +54,14 @@ public class EventService {
             }
 
         }
+    }
+
+    public List<EventWithSteps> getAllEventsWithSteps() {
+        List<Event> events = eventRepository.findAll();
+        return events.stream().map(event -> {
+            List<Step> steps = stepRepository.findByEventEventId(event.getEventId());
+            return new EventWithSteps(event, steps);
+        }).collect(Collectors.toList());
     }
 
 
