@@ -6,31 +6,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "team_member")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "file_award")
-public class FileAward {
-
+public class TeamMember {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "name_file")
-    private String nameFile;
-
-
-    @Column(name = "type_file")
-    private String typeFile;
-
-
-    @Column(name = "path_file")
-    private String pathFile;
-
+    private Long teamMemberId;
 
     @ManyToOne
-    @JoinColumn(name = "id_team")
+    @JoinColumn(name = "team_id")
     private Team team;
 
+    private String memberName;
+
+    private String memberPosition;
 }

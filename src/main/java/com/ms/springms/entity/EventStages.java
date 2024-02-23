@@ -6,22 +6,26 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "department")
+@Data
+@Table(name = "event_stages")
 
-public class Department {
-
+public class EventStages {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long stageId;
 
-    @Column(name = "name_department")
-    private String nameDepartment;
+    @ManyToOne
+    @JoinColumn(name = "event_id")
+    private Event event;
 
-    @OneToOne
-    @JoinColumn(name = "user_info_id" ,unique = true)
-    private UserInfo userInfo;
+    private String stageName;
+
+    private String description;
+
+    private boolean approval;
+
+
 
 }

@@ -4,6 +4,7 @@ import com.ms.springms.Exceptions.DuplicateEntryException;
 import com.ms.springms.entity.Event;
 import com.ms.springms.model.event.EventWithSteps;
 import com.ms.springms.service.event.EventService;
+import com.ms.springms.service.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

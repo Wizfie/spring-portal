@@ -1,37 +1,31 @@
-    package com.ms.springms.entity;
+package com.ms.springms.entity;
 
-    import com.fasterxml.jackson.annotation.JsonIgnore;
-    import jakarta.persistence.*;
-    import lombok.AllArgsConstructor;
-    import lombok.Data;
-    import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-    import java.util.List;
+@Entity
+@Table(name = "team")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Team {
 
-    @Entity
-    @Table(name = "team")
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public class Team {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long teamId;
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
+    @ManyToOne
+    @JoinColumn(name = "event_id")
+    private Event event;
 
-        @Column(name = "name_team")
-        private String nameTeam;
+    @Column(name = "team_name" ,unique = true)
+    private String teamName;
 
-        @Column(name = "team_creation_year")
-        private int teamCreationYear;
+    private String userId;
 
-        @Column(name ="id_user")
-        private Long idUser;
-
+    private String description;
 
 
-
-        @OneToMany(mappedBy = "team")
-        @JsonIgnore // Menambahkan anotasi @JsonIgnore untuk menghindari rekursi tak terbatas
-        private List<MemberTeam> members;
-    }
+}
