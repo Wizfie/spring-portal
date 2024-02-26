@@ -20,6 +20,10 @@ public class TeamMember {
     @JoinColumn(name = "team_id")
     private Team team;
 
+    @ManyToOne
+    @JoinColumn(name = "event_id")
+    private Event event;
+
     private String memberName;
 
     private String memberPosition;
