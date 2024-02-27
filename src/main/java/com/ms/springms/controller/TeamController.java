@@ -1,6 +1,7 @@
 package com.ms.springms.controller;
 
 import com.ms.springms.entity.Team;
+import com.ms.springms.model.TeamWithMember;
 import com.ms.springms.service.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,8 +30,10 @@ public class TeamController {
     }
 
     @GetMapping("/get-all")
-    public ResponseEntity<?> getAllTeam(){
-        return teamService.getAllTeam();
+    public ResponseEntity<List<TeamWithMember>> getAllTeam(){
+        List<TeamWithMember> teamWithMembers = teamService.getAllTeam();
+
+         return new ResponseEntity<>(teamWithMembers,HttpStatus.OK);
     }
 
 }

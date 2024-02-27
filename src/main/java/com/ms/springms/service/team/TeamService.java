@@ -1,7 +1,10 @@
 package com.ms.springms.service.team;
 
 import com.ms.springms.entity.Team;
-import com.ms.springms.repository.TeamRepository;
+import com.ms.springms.entity.TeamMember;
+import com.ms.springms.model.TeamWithMember;
+import com.ms.springms.repository.team.TeamMemberRepository;
+import com.ms.springms.repository.team.TeamRepository;
 import com.ms.springms.repository.event.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -10,12 +13,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TeamService {
 
     @Autowired
     private TeamRepository teamRepository;
+
+    @Autowired
+    private TeamMemberRepository teamMemberRepository;
 
     @Autowired
     private EventRepository eventRepository;
@@ -27,18 +34,12 @@ public class TeamService {
             throw  new IllegalArgumentException("Team Already Exist");
         }
     }
-    public ResponseEntity<?> getAllTeam(){
-        try {
-            List<Team> teams = teamRepository.findAll();
-            if (teams.isEmpty()){
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Data Not Found");
-            } else {
-                return ResponseEntity.ok(teams);
-            }
-        } catch (Exception ex){
-            ex.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error Fetch Data");
-        }
-    }
+    public List<TeamWithMember> getAllTeam() {
+        List<Team> teams = teamRepository.findAll();
+        return teams.stream().map(team -> {
+            List<TeamMember> members = teamMemberRepository.findByTeamTeamId(team.getTeamId());
+            return new TeamWithMember(team, members);
 
-}
+        }).collect(Collectors.toList());
+    }
+    };

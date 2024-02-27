@@ -41,9 +41,5 @@ public class EventController {
     }
 
 
-    @GetMapping("/get-all-awards")
-    public List<Event> getAllAwards(){
-        return eventService.getAllAwards();
-    }
 
 }

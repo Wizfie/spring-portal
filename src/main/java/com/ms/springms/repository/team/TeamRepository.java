@@ -1,4 +1,4 @@
-package com.ms.springms.repository;
+package com.ms.springms.repository.team;
 
 import com.ms.springms.entity.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
