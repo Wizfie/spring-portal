@@ -22,6 +22,10 @@ public class UploadFiles {
     @JoinColumn(name = "stage_id")
     private EventStages eventStages;
 
+    @ManyToOne
+    @JoinColumn(name = "registration_id")
+    private Registration registration;
+
     private String fileName;
 
     private String filePath;

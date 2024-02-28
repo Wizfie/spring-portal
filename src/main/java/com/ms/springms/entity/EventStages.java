@@ -24,7 +24,7 @@ public class EventStages {
 
     private String description;
 
-    private boolean approval;
+    private String approval;
 
 
 
