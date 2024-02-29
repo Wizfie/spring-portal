@@ -18,7 +18,7 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long teamId;
 
-    @Column(name = "team_name" ,unique = true)
+    @Column(name = "team_name")
     private String teamName;
 
     private String userId;
@@ -26,6 +26,11 @@ public class Team {
     private String description;
 
     private LocalDate createdAt;
+
+
+
+
+
 
 
 

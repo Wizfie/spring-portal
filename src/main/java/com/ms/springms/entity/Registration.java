@@ -22,10 +22,5 @@ public class Registration {
     @JoinColumn(name = "event_id")
     private Event event;
 
-
-
-    @OneToMany(mappedBy = "registration", cascade = CascadeType.ALL)
-    private List<UploadFiles> uploadFiles;
-
     private String RegistrationStatus;
 }

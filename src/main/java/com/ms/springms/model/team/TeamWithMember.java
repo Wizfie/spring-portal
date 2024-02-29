@@ -1,4 +1,4 @@
-package com.ms.springms.model;
+package com.ms.springms.model.team;
 
 import com.ms.springms.entity.Team;
 import com.ms.springms.entity.TeamMember;

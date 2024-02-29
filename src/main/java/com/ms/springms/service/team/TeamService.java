@@ -2,14 +2,12 @@ package com.ms.springms.service.team;
 
 import com.ms.springms.entity.Team;
 import com.ms.springms.entity.TeamMember;
-import com.ms.springms.model.TeamWithMember;
+import com.ms.springms.model.team.TeamWithMember;
 import com.ms.springms.repository.team.TeamMemberRepository;
 import com.ms.springms.repository.team.TeamRepository;
 import com.ms.springms.repository.event.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

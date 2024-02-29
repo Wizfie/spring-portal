@@ -1,7 +1,7 @@
 package com.ms.springms.controller;
 
 import com.ms.springms.entity.Team;
-import com.ms.springms.model.TeamWithMember;
+import com.ms.springms.model.team.TeamWithMember;
 import com.ms.springms.service.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
