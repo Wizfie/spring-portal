@@ -1,5 +1,6 @@
 package com.ms.springms.service;
 
+import com.ms.springms.Exceptions.ResourceNotFoundException;
 import com.ms.springms.entity.*;
 import com.ms.springms.model.event.EventDTO;
 import com.ms.springms.model.event.EventStagesDTO;
@@ -19,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RegistrationService {
@@ -70,7 +72,7 @@ public class RegistrationService {
             teamDTO.setTeamId(team.getTeamId());
             teamDTO.setTeamName(team.getTeamName());
             teamDTO.setUserId(team.getUserId());
-            teamDTO.setTeamMember(convertToTeamMemberDTOList(teamMembers)); // Mengonversi List<TeamMember> menjadi List<TeamMemberDTO>
+            teamDTO.setTeamMember(convertToTeamMemberDTOList(teamMembers));
 
             // Set EventDTO
             Event event = registration.getEvent();
@@ -78,7 +80,7 @@ public class RegistrationService {
             EventDTO eventDTO = new EventDTO();
             eventDTO.setEventId(event.getEventId());
             eventDTO.setEventName(event.getEventName());
-            eventDTO.setStages(convertToEventStagesDTOList(eventStages)); // Mengonversi List<EventStages> menjadi List<EventStagesDTO>
+            eventDTO.setStages(convertToEventStagesDTOList(eventStages));
 
             responseDTO.setTeam(teamDTO);
             responseDTO.setEvent(eventDTO);
@@ -88,6 +90,49 @@ public class RegistrationService {
 
         return responseDTOList;
     }
+
+
+    public RegistrationResponseDTO getRegistrationById(Long registrationId) {
+        try {
+            Optional<Registration> registrationOptional = registrationRepository.findById(registrationId);
+
+            if (registrationOptional.isPresent()) {
+                Registration registration = registrationOptional.get();
+                RegistrationResponseDTO responseDTO = new RegistrationResponseDTO();
+                responseDTO.setRegistrationId(registration.getRegistrationId());
+                responseDTO.setRegistrationStatus(registration.getRegistrationStatus());
+
+                // Set TeamDTO
+                Team team = registration.getTeam();
+                List<TeamMember> teamMembers = teamMemberRepository.findByTeam(team);
+                TeamDTO teamDTO = new TeamDTO();
+                teamDTO.setTeamId(team.getTeamId());
+                teamDTO.setTeamName(team.getTeamName());
+                teamDTO.setUserId(team.getUserId());
+                teamDTO.setTeamMember(convertToTeamMemberDTOList(teamMembers));
+
+                // Set EventDTO
+                Event event = registration.getEvent();
+                List<EventStages> eventStages = eventStagesRepository.findByEvent(event);
+                EventDTO eventDTO = new EventDTO();
+                eventDTO.setEventId(event.getEventId());
+                eventDTO.setEventName(event.getEventName());
+                eventDTO.setStages(convertToEventStagesDTOList(eventStages));
+
+                responseDTO.setTeam(teamDTO);
+                responseDTO.setEvent(eventDTO);
+
+                return responseDTO;
+            } else {
+                // Registrasi dengan ID yang diberikan tidak ditemukan
+                throw new ResourceNotFoundException("Registrasi dengan ID " + registrationId + " tidak ditemukan");
+            }
+        } catch (Exception ex) {
+            // Tangani pengecualian dan kembalikan pesan kesalahan yang sesuai
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Terjadi kesalahan saat mencari registrasi dengan ID " + registrationId, ex);
+        }
+    }
+
 
     // Metode untuk mengonversi List<TeamMember> menjadi List<TeamMemberDTO>
     private List<TeamMemberDTO> convertToTeamMemberDTOList(List<TeamMember> teamMembers) {
@@ -109,6 +154,8 @@ public class RegistrationService {
             EventStagesDTO eventStagesDTO = new EventStagesDTO();
             eventStagesDTO.setStageId(eventStage.getStageId());
             eventStagesDTO.setStageName(eventStage.getStageName());
+            eventStagesDTO.setDescription(eventStage.getDescription());
+            eventStagesDTO.setApproval(eventStage.getApproval());
             // Set properti lain jika ada
             eventStagesDTOList.add(eventStagesDTO);
         }
