@@ -1,5 +1,6 @@
 package com.ms.springms.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,13 +19,9 @@ public class UploadFiles {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long filesId;
 
-    @ManyToOne
-    @JoinColumn(name = "stage_id")
-    private EventStages eventStages;
+    private Long stageId;
 
-    @ManyToOne
-    @JoinColumn(name = "registration_id")
-    private Registration registration;
+    private Long registrationId;
 
     private String fileName;
 
@@ -33,5 +30,7 @@ public class UploadFiles {
     private String uploadedBy;
 
     private LocalDateTime uploadedAt;
+
+    private String approvalStatus;
 }
 

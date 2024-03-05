@@ -9,6 +9,7 @@ import com.ms.springms.model.registration.RegistrationResponseDTO;
 import com.ms.springms.model.team.TeamDTO;
 import com.ms.springms.model.team.TeamMemberDTO;
 import com.ms.springms.repository.RegistrationRepository;
+import com.ms.springms.repository.UploadFileRepository;
 import com.ms.springms.repository.event.EventRepository;
 import com.ms.springms.repository.stage.EventStagesRepository;
 import com.ms.springms.repository.team.TeamMemberRepository;
@@ -39,6 +40,9 @@ public class RegistrationService {
 
     @Autowired
     private EventStagesRepository eventStagesRepository;
+
+    @Autowired
+    private UploadFileRepository uploadFileRepository;
 
     public void registration(RegistrationRequest registrationRequest){
         Long teamId = registrationRequest.getTeamId();
@@ -155,8 +159,12 @@ public class RegistrationService {
             eventStagesDTO.setStageId(eventStage.getStageId());
             eventStagesDTO.setStageName(eventStage.getStageName());
             eventStagesDTO.setDescription(eventStage.getDescription());
-            eventStagesDTO.setApproval(eventStage.getApproval());
-            // Set properti lain jika ada
+
+            // Mengambil daftar file yang diunggah pada tahapan acara
+            List<UploadFiles> uploadFiles = uploadFileRepository.findByStageId(eventStagesDTO.getStageId());
+
+            eventStagesDTO.setUploadFiles(uploadFiles);
+
             eventStagesDTOList.add(eventStagesDTO);
         }
         return eventStagesDTOList;

@@ -1,8 +1,11 @@
 package com.ms.springms.model.event;
 
+import com.ms.springms.entity.UploadFiles;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -11,6 +14,6 @@ public class EventStagesDTO {
     private Long stageId;
     private String stageName;
     private String description;
-    private String approval;
+    List<UploadFiles> uploadFiles;
 
 }
