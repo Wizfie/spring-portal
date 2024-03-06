@@ -19,9 +19,13 @@ public class UploadFiles {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long filesId;
 
-    private Long stageId;
+    @ManyToOne
+    @JoinColumn(name = "stage_id")
+    private EventStages eventStages;
 
-    private Long registrationId;
+    @ManyToOne
+    @JoinColumn(name = "registration_id")
+    private Registration registration;
 
     private String fileName;
 

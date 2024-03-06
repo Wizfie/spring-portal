@@ -2,6 +2,7 @@ package com.ms.springms.service;
 
 import com.ms.springms.Exceptions.ResourceNotFoundException;
 import com.ms.springms.entity.*;
+import com.ms.springms.model.uploads.UploadFilesDTO;
 import com.ms.springms.model.event.EventDTO;
 import com.ms.springms.model.event.EventStagesDTO;
 import com.ms.springms.model.registration.RegistrationRequest;
@@ -44,20 +45,20 @@ public class RegistrationService {
     @Autowired
     private UploadFileRepository uploadFileRepository;
 
-    public void registration(RegistrationRequest registrationRequest){
+    public void registration(RegistrationRequest registrationRequest) {
         Long teamId = registrationRequest.getTeamId();
         Long eventId = registrationRequest.getEventId();
 
-        Team team = teamRepository.findById(teamId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND , "Not Found" + teamId));
-        Event event = eventRepository.findById(eventId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Not Found " + eventId));
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found" + teamId));
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found " + eventId));
 
         Registration registration = new Registration();
         registration.setTeam(team);
         registration.setEvent(event);
         registration.setRegistrationStatus("Pending");
         registrationRepository.save(registration);
-
-
     }
 
     public List<RegistrationResponseDTO> getAllRegistrations() {
@@ -89,12 +90,30 @@ public class RegistrationService {
             responseDTO.setTeam(teamDTO);
             responseDTO.setEvent(eventDTO);
 
+            // Ambil semua upload files yang terkait dengan registrasi tertentu
+            List<UploadFiles> uploadFiles = uploadFileRepository.findByRegistration(registration);
+            List<UploadFilesDTO> registrationUploadFiles = new ArrayList<>();
+            for (UploadFiles uploadFile : uploadFiles) {
+                UploadFilesDTO uploadFileDTO = new UploadFilesDTO();
+                uploadFileDTO.setFilesId(uploadFile.getFilesId());
+                uploadFileDTO.setFileName(uploadFile.getFileName());
+                uploadFileDTO.setFilePath(uploadFile.getFilePath());
+                uploadFileDTO.setUploadedAt(uploadFile.getUploadedAt());
+                uploadFileDTO.setUploadedBy(uploadFile.getUploadedBy());
+//                uploadFileDTO.setStageId(uploadFile.getEventStages().getStageId());
+//                uploadFileDTO.setRegistrationId(registration.getRegistrationId());
+                uploadFileDTO.setApprovalStatus(uploadFile.getApprovalStatus());
+                registrationUploadFiles.add(uploadFileDTO);
+            }
+
+            // Tambahkan upload files terkait dengan registrasi ke dalam responsenya
+            responseDTO.setUploadFiles(registrationUploadFiles);
+
             responseDTOList.add(responseDTO);
         }
 
         return responseDTOList;
     }
-
 
     public RegistrationResponseDTO getRegistrationById(Long registrationId) {
         try {
@@ -123,8 +142,31 @@ public class RegistrationService {
                 eventDTO.setEventName(event.getEventName());
                 eventDTO.setStages(convertToEventStagesDTOList(eventStages));
 
+
+                // Ambil semua upload files yang terkait dengan registrasi tertentu
+                List<UploadFiles> uploadFiles = uploadFileRepository.findByRegistration(registration);
+                List<UploadFilesDTO> registrationUploadFiles = new ArrayList<>();
+                for (UploadFiles uploadFile : uploadFiles) {
+                    UploadFilesDTO uploadFileDTO = new UploadFilesDTO();
+                    uploadFileDTO.setFilesId(uploadFile.getFilesId());
+                    uploadFileDTO.setFileName(uploadFile.getFileName());
+                    uploadFileDTO.setFilePath(uploadFile.getFilePath());
+                    uploadFileDTO.setUploadedAt(uploadFile.getUploadedAt());
+                    uploadFileDTO.setUploadedBy(uploadFile.getUploadedBy());
+                    uploadFileDTO.setStageId(uploadFile.getEventStages().getStageId());
+                    uploadFileDTO.setRegistrationId(registration.getRegistrationId());
+                    uploadFileDTO.setApprovalStatus(uploadFile.getApprovalStatus());
+                    registrationUploadFiles.add(uploadFileDTO);
+                }
+
+                // Tambahkan upload files terkait dengan registrasi ke dalam responsenya
+                responseDTO.setUploadFiles(registrationUploadFiles);
+
+
                 responseDTO.setTeam(teamDTO);
                 responseDTO.setEvent(eventDTO);
+
+
 
                 return responseDTO;
             } else {
@@ -136,7 +178,6 @@ public class RegistrationService {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Terjadi kesalahan saat mencari registrasi dengan ID " + registrationId, ex);
         }
     }
-
 
     // Metode untuk mengonversi List<TeamMember> menjadi List<TeamMemberDTO>
     private List<TeamMemberDTO> convertToTeamMemberDTOList(List<TeamMember> teamMembers) {
@@ -160,13 +201,9 @@ public class RegistrationService {
             eventStagesDTO.setStageName(eventStage.getStageName());
             eventStagesDTO.setDescription(eventStage.getDescription());
 
-            // Mengambil daftar file yang diunggah pada tahapan acara
-            List<UploadFiles> uploadFiles = uploadFileRepository.findByStageId(eventStagesDTO.getStageId());
-
-            eventStagesDTO.setUploadFiles(uploadFiles);
-
             eventStagesDTOList.add(eventStagesDTO);
         }
         return eventStagesDTOList;
     }
+
 }
