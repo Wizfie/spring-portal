@@ -100,8 +100,8 @@ public class RegistrationService {
                 uploadFileDTO.setFilePath(uploadFile.getFilePath());
                 uploadFileDTO.setUploadedAt(uploadFile.getUploadedAt());
                 uploadFileDTO.setUploadedBy(uploadFile.getUploadedBy());
-//                uploadFileDTO.setStageId(uploadFile.getEventStages().getStageId());
-//                uploadFileDTO.setRegistrationId(registration.getRegistrationId());
+                uploadFileDTO.setStageId(uploadFile.getEventStages().getStageId());
+                uploadFileDTO.setRegistrationId(registration.getRegistrationId());
                 uploadFileDTO.setApprovalStatus(uploadFile.getApprovalStatus());
                 registrationUploadFiles.add(uploadFileDTO);
             }

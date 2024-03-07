@@ -31,7 +31,7 @@ public class UploadFileController {
             @RequestParam Registration registration) {
         try {
             uploadFilesService.uploadFile(file,eventName,teamName,eventStages,registration);
-            return ResponseEntity.status(HttpStatus.OK).body("File uploaded successfully.");
+            return ResponseEntity.status(HttpStatus.OK).body("File "+ file.getOriginalFilename()+ " uploaded successfully.");
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload file: " + e.getMessage());
         }
