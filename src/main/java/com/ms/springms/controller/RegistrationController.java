@@ -1,10 +1,9 @@
 package com.ms.springms.controller;
 
 import com.ms.springms.Exceptions.ResourceNotFoundException;
-import com.ms.springms.entity.Registration;
 import com.ms.springms.model.registration.RegistrationRequest;
 import com.ms.springms.model.registration.RegistrationResponseDTO;
-import com.ms.springms.service.RegistrationService;
+import com.ms.springms.service.registration.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

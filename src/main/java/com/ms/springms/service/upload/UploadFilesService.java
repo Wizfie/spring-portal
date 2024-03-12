@@ -1,4 +1,4 @@
-package com.ms.springms.service;
+package com.ms.springms.service.upload;
 
 import com.ms.springms.entity.EventStages;
 import com.ms.springms.entity.Registration;
@@ -51,7 +51,7 @@ public class UploadFilesService {
             uploadFile.setFilePath(filePath.toString());
             uploadFile.setUploadedBy(teamName);
             uploadFile.setUploadedAt(LocalDateTime.now());
-            uploadFile.setApprovalStatus("Pending");
+            uploadFile.setApprovalStatus("WAITING");
             uploadFile.setEventStages(eventStages);
             uploadFile.setRegistration(registration);
 

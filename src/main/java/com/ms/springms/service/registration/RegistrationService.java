@@ -1,4 +1,4 @@
-package com.ms.springms.service;
+package com.ms.springms.service.registration;
 
 import com.ms.springms.Exceptions.ResourceNotFoundException;
 import com.ms.springms.entity.*;
