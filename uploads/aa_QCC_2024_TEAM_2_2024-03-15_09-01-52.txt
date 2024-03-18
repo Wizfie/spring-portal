@@ -1,1 +1,0 @@
-https://github.com/Wizfie/Flutter-CRUD.git

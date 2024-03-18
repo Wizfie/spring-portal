@@ -39,6 +39,21 @@ public class FileController {
         }
     }
 
+    @PutMapping("/update/{fileId}")
+    public ResponseEntity<String> updateFile(@PathVariable Long fileId,
+                                             @RequestParam("file") MultipartFile file,
+                                             @RequestParam("eventName") String eventName,
+                                             @RequestParam("teamName") String teamName,
+                                             @RequestParam EventStages eventStages,
+                                             @RequestParam Registration registration) {
+        try {
+            uploadFilesService.updateFileById(fileId, file, eventName, teamName, eventStages, registration);
+            return ResponseEntity.status(HttpStatus.OK).body("File berhasil diperbarui");
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Gagal memperbarui file: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) throws MalformedURLException {
         Resource resource = uploadFilesService.downloadFile(fileName);

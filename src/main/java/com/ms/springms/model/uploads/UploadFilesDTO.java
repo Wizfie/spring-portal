@@ -19,4 +19,5 @@ public class UploadFilesDTO {
     private Long stageId;
     private Long registrationId;
     private String approvalStatus;
+    private String description;
 }

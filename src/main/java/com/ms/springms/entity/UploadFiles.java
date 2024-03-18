@@ -36,5 +36,7 @@ public class UploadFiles {
     private LocalDateTime uploadedAt;
 
     private String approvalStatus;
+
+    private String description;
 }
 

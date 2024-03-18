@@ -19,6 +19,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UploadFilesService {
@@ -82,6 +83,90 @@ public class UploadFilesService {
 
     }
 
+    public void updateFileById(Long fileId, MultipartFile file, String eventName, String teamName, EventStages eventStages, Registration registration) throws IOException {
+        // check file
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("File is empty");
+        }
+
+        try {
+            // Retrieve file by ID
+            Optional<UploadFiles> optionalUploadFile = uploadFileRepository.findById(fileId);
+            if (optionalUploadFile.isPresent()) {
+                UploadFiles uploadFile = optionalUploadFile.get();
+
+                // Generate new unique file name
+                String fileName = file.getOriginalFilename();
+                String uniqueFileName = generateUniqueFileName(fileName, eventName, teamName);
+                Path uploadPath = Paths.get(uploadDir);
+
+                // Create folder if not exists
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                Path filePath = uploadPath.resolve(uniqueFileName);
+
+                // Check if file with same name already exists
+                if (Files.exists(filePath)) {
+                    // Delete existing file
+                    Files.delete(filePath);
+                }
+
+                // Delete old file from local filesystem
+                Path oldFilePath = Paths.get(uploadFile.getFilePath());
+                if (Files.exists(oldFilePath)) {
+                    Files.delete(oldFilePath);
+                }
+                Files.copy(file.getInputStream(), filePath);
+
+                // Update file attributes
+                uploadFile.setFileName(uniqueFileName);
+                uploadFile.setFilePath(filePath.toString());
+                uploadFile.setUploadedBy(teamName);
+                uploadFile.setUploadedAt(LocalDateTime.now());
+                uploadFile.setApprovalStatus("WAITING");
+                uploadFile.setEventStages(eventStages);
+                uploadFile.setRegistration(registration);
+
+
+                uploadFileRepository.save(uploadFile);
+            } else {
+                throw new IllegalArgumentException("File not found with ID: " + fileId);
+            }
+        } catch (IOException ex) {
+            throw new IOException("Failed to upload file: " + ex);
+        }
+    }
+
+
+    public void updateApprovalStatus(Long fileId, String approvalStatus) {
+        Optional<UploadFiles> optionalFile = uploadFileRepository.findById(fileId);
+        if (optionalFile.isPresent()) {
+            UploadFiles uploadFile = optionalFile.get();
+            uploadFile.setApprovalStatus(approvalStatus);
+            uploadFileRepository.save(uploadFile);
+        } else {
+            throw new RuntimeException("File not found with id: " + fileId);
+        }
+    }
+
+    public void rejectFile(Long fileId, String rejectionReason, MultipartFile newFile) throws IOException {
+        Optional<UploadFiles> optionalFile = uploadFileRepository.findById(fileId);
+        if (optionalFile.isPresent()) {
+            UploadFiles uploadFile = optionalFile.get();
+            uploadFile.setApprovalStatus("REJECT");
+            uploadFile.setDescription(rejectionReason);
+            if (newFile != null) {
+                // Jika file baru diunggah, update file yang ada
+                uploadFile.setFileName(newFile.getOriginalFilename());
+                uploadFile.setFilePath(saveFile(newFile));
+            }
+            uploadFileRepository.save(uploadFile);
+        } else {
+            throw new RuntimeException("File not found with id: " + fileId);
+        }
+    }
     public List<UploadFiles> getALl(){
         return uploadFileRepository.findAll();
     }
@@ -98,11 +183,26 @@ public class UploadFilesService {
     }
 
 
-    private String generateUniqueFileName(String originalFileName, String eventName, String teamName) {
+    private String saveFile(MultipartFile file) throws IOException {
+        String uniqueFileName = generateUniqueFileName(file.getOriginalFilename());
+        Path filePath = this.fileStorageLocation.resolve(uniqueFileName);
+        Files.copy(file.getInputStream(), filePath);
+        return filePath.toString();
+    }
+
+    private String generateUniqueFileName(String originalFileName, String... additionalParams) {
         String fileNameWithoutExtension = originalFileName.substring(0, originalFileName.lastIndexOf('.'));
         String fileExtension = originalFileName.substring(originalFileName.lastIndexOf('.'));
-        String formattedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
-        String uniqueFileName = fileNameWithoutExtension + "_" + eventName + "_" + teamName + "_" + formattedDateTime + fileExtension;
+        StringBuilder uniqueFileNameBuilder = new StringBuilder(fileNameWithoutExtension);
+
+        // Menambahkan parameter tambahan jika ada
+        for (String param : additionalParams) {
+            uniqueFileNameBuilder.append("_").append(param);
+        }
+
+        uniqueFileNameBuilder.append(fileExtension);
+        String uniqueFileName = uniqueFileNameBuilder.toString();
+
         // Memastikan nama file unik dengan mengganti karakter yang tidak valid
         uniqueFileName = uniqueFileName.replaceAll("[^a-zA-Z0-9.-]", "_");
         return uniqueFileName;

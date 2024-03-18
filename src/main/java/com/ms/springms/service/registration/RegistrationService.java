@@ -156,6 +156,7 @@ public class RegistrationService {
                     uploadFileDTO.setStageId(uploadFile.getEventStages().getStageId());
                     uploadFileDTO.setRegistrationId(registration.getRegistrationId());
                     uploadFileDTO.setApprovalStatus(uploadFile.getApprovalStatus());
+                    uploadFileDTO.setDescription(uploadFile.getDescription());
                     registrationUploadFiles.add(uploadFileDTO);
                 }
 
