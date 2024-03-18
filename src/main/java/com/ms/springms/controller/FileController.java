@@ -54,6 +54,17 @@ public class FileController {
         }
     }
 
+    @PutMapping("/approve/{fileId}")
+    public ResponseEntity<String> approveFile(@PathVariable Long fileId, @RequestParam String approvalStatus) {
+        try {
+            uploadFilesService.approveFile(fileId, approvalStatus);
+            return ResponseEntity.ok("File approval status updated successfully");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+
     @GetMapping("/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) throws MalformedURLException {
         Resource resource = uploadFilesService.downloadFile(fileName);

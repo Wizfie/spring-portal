@@ -5,7 +5,6 @@ import com.ms.springms.entity.Registration;
 import com.ms.springms.entity.UploadFiles;
 import com.ms.springms.repository.UploadFileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -17,8 +16,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -54,6 +53,7 @@ public class UploadFilesService {
 
         try {
             String fileName = file.getOriginalFilename();
+            assert fileName != null;
             String uniqueFileName = generateUniqueFileName(fileName, eventName , teamName);
             Path uploadPath = Paths.get(uploadDir);
 
@@ -140,7 +140,7 @@ public class UploadFilesService {
     }
 
 
-    public void updateApprovalStatus(Long fileId, String approvalStatus) {
+    public void approveFile(Long fileId, String approvalStatus) {
         Optional<UploadFiles> optionalFile = uploadFileRepository.findById(fileId);
         if (optionalFile.isPresent()) {
             UploadFiles uploadFile = optionalFile.get();
@@ -184,7 +184,7 @@ public class UploadFilesService {
 
 
     private String saveFile(MultipartFile file) throws IOException {
-        String uniqueFileName = generateUniqueFileName(file.getOriginalFilename());
+        String uniqueFileName = generateUniqueFileName(Objects.requireNonNull(file.getOriginalFilename()));
         Path filePath = this.fileStorageLocation.resolve(uniqueFileName);
         Files.copy(file.getInputStream(), filePath);
         return filePath.toString();
