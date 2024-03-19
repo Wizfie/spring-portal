@@ -151,12 +151,12 @@ public class UploadFilesService {
         }
     }
 
-    public void rejectFile(Long fileId, String rejectionReason, MultipartFile newFile) throws IOException {
+    public void rejectFile(Long fileId, String description, MultipartFile newFile) throws IOException {
         Optional<UploadFiles> optionalFile = uploadFileRepository.findById(fileId);
         if (optionalFile.isPresent()) {
             UploadFiles uploadFile = optionalFile.get();
             uploadFile.setApprovalStatus("REJECT");
-            uploadFile.setDescription(rejectionReason);
+            uploadFile.setDescription(description);
             if (newFile != null) {
                 // Jika file baru diunggah, update file yang ada
                 uploadFile.setFileName(newFile.getOriginalFilename());

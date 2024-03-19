@@ -64,6 +64,20 @@ public class FileController {
         }
     }
 
+    @PutMapping("/reject/{fileId}")
+    public ResponseEntity<String> rejectFile(@PathVariable Long fileId,
+                                             @RequestParam("description") String description,
+                                             @RequestParam("file") MultipartFile file
+                                             ) {
+        try {
+            uploadFilesService.rejectFile(fileId , description , file);
+            return ResponseEntity.ok("Reject File Success");
+
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
 
     @GetMapping("/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) throws MalformedURLException {
