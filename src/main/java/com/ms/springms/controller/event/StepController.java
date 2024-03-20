@@ -1,4 +1,4 @@
-package com.ms.springms.controller;
+package com.ms.springms.controller.event;
 
 import com.ms.springms.entity.Step;
 import com.ms.springms.model.event.EventWithSteps;
@@ -18,7 +18,7 @@ public class StepController {
     private StepService stepService;
 
     @PostMapping("/add/{eventId}")
-    public ResponseEntity<Step> addStep(@PathVariable Long eventId , @RequestBody Step step){
+    public ResponseEntity<Step> addStep(@PathVariable Long eventId , @RequestBody Step step) throws Exception {
 
         Step addedStep = stepService.addStep(eventId, step);
         return new ResponseEntity<>(addedStep, HttpStatus.CREATED);

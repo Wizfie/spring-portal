@@ -1,4 +1,4 @@
-package com.ms.springms.controller;
+package com.ms.springms.controller.event;
 
 import com.ms.springms.Exceptions.ResourceNotFoundException;
 import com.ms.springms.model.registration.RegistrationRequest;

@@ -1,4 +1,4 @@
-package com.ms.springms.controller;
+package com.ms.springms.controller.event;
 
 import com.ms.springms.Exceptions.DuplicateEntryException;
 import com.ms.springms.entity.Event;

@@ -1,4 +1,4 @@
-package com.ms.springms.controller;
+package com.ms.springms.controller.team;
 
 import com.ms.springms.entity.Team;
 import com.ms.springms.model.team.TeamWithMember;
@@ -27,6 +27,11 @@ public class TeamController {
         } catch (IllegalArgumentException ex){
             return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/get")
+    public List<Team> getTeam() {
+        return teamService.getTeam();
     }
 
     @GetMapping("/get-all")

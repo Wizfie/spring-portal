@@ -1,4 +1,4 @@
-package com.ms.springms.controller;
+package com.ms.springms.controller.email;
 
 import com.ms.springms.model.email.MailRequest;
 import com.ms.springms.model.email.MailResponse;

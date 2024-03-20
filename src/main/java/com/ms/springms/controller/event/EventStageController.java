@@ -1,4 +1,4 @@
-package com.ms.springms.controller;
+package com.ms.springms.controller.event;
 
 import com.ms.springms.entity.EventStages;
 import com.ms.springms.service.stages.EventStageService;

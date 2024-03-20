@@ -32,6 +32,10 @@ public class TeamService {
             throw  new IllegalArgumentException("Team Already Exist");
         }
     }
+
+    public List<Team> getTeam(){
+        return teamRepository.findAll();
+    }
     public List<TeamWithMember> getAllTeam() {
         List<Team> teams = teamRepository.findAll();
         return teams.stream().map(team -> {
@@ -40,4 +44,5 @@ public class TeamService {
 
         }).collect(Collectors.toList());
     }
-    };
+
+}

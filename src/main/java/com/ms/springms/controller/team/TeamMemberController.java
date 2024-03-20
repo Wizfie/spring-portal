@@ -1,4 +1,4 @@
-package com.ms.springms.controller;
+package com.ms.springms.controller.team;
 
 import com.ms.springms.entity.TeamMember;
 import com.ms.springms.service.team.TeamMemberService;

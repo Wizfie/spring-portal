@@ -1,4 +1,4 @@
-package com.ms.springms.controller;
+package com.ms.springms.controller.user;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ms.springms.Exceptions.DuplicateEntryException;

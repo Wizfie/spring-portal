@@ -144,6 +144,7 @@ public class UploadFilesService {
         Optional<UploadFiles> optionalFile = uploadFileRepository.findById(fileId);
         if (optionalFile.isPresent()) {
             UploadFiles uploadFile = optionalFile.get();
+
             uploadFile.setApprovalStatus(approvalStatus);
             uploadFileRepository.save(uploadFile);
         } else {
@@ -157,16 +158,37 @@ public class UploadFilesService {
             UploadFiles uploadFile = optionalFile.get();
             uploadFile.setApprovalStatus("REJECT");
             uploadFile.setDescription(description);
+
+            // Menggunakan logika yang sama dengan updateFileById untuk menangani file baru yang diunggah
             if (newFile != null) {
-                // Jika file baru diunggah, update file yang ada
-                uploadFile.setFileName(newFile.getOriginalFilename());
-                uploadFile.setFilePath(saveFile(newFile));
+                String fileName = newFile.getOriginalFilename();
+                String uniqueFileName = generateUniqueFileName(fileName);
+                Path uploadPath = Paths.get(uploadDir);
+
+                // Buat folder jika belum ada
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                Path filePath = uploadPath.resolve(uniqueFileName);
+                if (Files.exists(filePath)) {
+                    // Hapus file lama jika file baru dengan nama yang sama sudah ada
+                    Files.delete(filePath);
+                }
+
+                Files.copy(newFile.getInputStream(), filePath);
+
+                // Perbarui atribut file
+                uploadFile.setFileName(uniqueFileName);
+                uploadFile.setFilePath(filePath.toString());
             }
+
             uploadFileRepository.save(uploadFile);
         } else {
             throw new RuntimeException("File not found with id: " + fileId);
         }
     }
+
     public List<UploadFiles> getALl(){
         return uploadFileRepository.findAll();
     }
