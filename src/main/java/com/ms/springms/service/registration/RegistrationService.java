@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -48,6 +49,7 @@ public class RegistrationService {
     public void registration(RegistrationRequest registrationRequest) {
         Long teamId = registrationRequest.getTeamId();
         Long eventId = registrationRequest.getEventId();
+        String createdBy = registrationRequest.getCreatedBy();
 
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found" + teamId));
@@ -57,6 +59,8 @@ public class RegistrationService {
         Registration registration = new Registration();
         registration.setTeam(team);
         registration.setEvent(event);
+        registration.setCreatedBy(createdBy);
+        registration.setCreatedAt(Year.now());
         registration.setRegistrationStatus("Pending");
         registrationRepository.save(registration);
     }
@@ -69,10 +73,13 @@ public class RegistrationService {
             RegistrationResponseDTO responseDTO = new RegistrationResponseDTO();
             responseDTO.setRegistrationId(registration.getRegistrationId());
             responseDTO.setRegistrationStatus(registration.getRegistrationStatus());
+            responseDTO.setCreatedBy(registration.getCreatedBy());
+            responseDTO.setCreatedAt(registration.getCreatedAt());
 
             // Set TeamDTO
             Team team = registration.getTeam();
-            List<TeamMember> teamMembers = teamMemberRepository.findByTeam(team);
+            Event eventTeam = registration.getEvent();
+            List<TeamMember> teamMembers = teamMemberRepository.findByTeamAndEvent(team ,eventTeam);
             TeamDTO teamDTO = new TeamDTO();
             teamDTO.setTeamId(team.getTeamId());
             teamDTO.setTeamName(team.getTeamName());
@@ -124,10 +131,13 @@ public class RegistrationService {
                 RegistrationResponseDTO responseDTO = new RegistrationResponseDTO();
                 responseDTO.setRegistrationId(registration.getRegistrationId());
                 responseDTO.setRegistrationStatus(registration.getRegistrationStatus());
+                responseDTO.setCreatedBy(registration.getCreatedBy());
+                responseDTO.setCreatedAt(registration.getCreatedAt());
 
                 // Set TeamDTO
                 Team team = registration.getTeam();
-                List<TeamMember> teamMembers = teamMemberRepository.findByTeam(team);
+                Event eventTeam = registration.getEvent();
+                List<TeamMember> teamMembers = teamMemberRepository.findByTeamAndEvent(team,eventTeam);
                 TeamDTO teamDTO = new TeamDTO();
                 teamDTO.setTeamId(team.getTeamId());
                 teamDTO.setTeamName(team.getTeamName());

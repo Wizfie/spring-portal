@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Year;
 import java.util.List;
 
 @Data
@@ -16,6 +17,8 @@ public class RegistrationResponseDTO {
 
     private Long registrationId;
     private String registrationStatus;
+    private String createdBy;
+    private Year createdAt;
     private TeamDTO team;
     private EventDTO event;
     private List<UploadFilesDTO> uploadFiles; // Menambahkan atribut untuk menyimpan informasi upload files
