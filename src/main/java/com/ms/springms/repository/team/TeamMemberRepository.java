@@ -18,4 +18,5 @@ public interface TeamMemberRepository extends JpaRepository<com.ms.springms.enti
 
     List<TeamMember> findByTeamAndEvent(Team team, Event event);
 
+    List<TeamMember> findByEventEventId(Long eventId);
 }

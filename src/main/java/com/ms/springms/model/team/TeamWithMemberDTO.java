@@ -5,6 +5,6 @@ import java.util.List;
 
 @Data
 public class TeamWithMemberDTO {
-    private TeamDTO team;
+    private TeamWithTeamMembersDTO team;
     private List<TeamMemberDTO> members;
 }

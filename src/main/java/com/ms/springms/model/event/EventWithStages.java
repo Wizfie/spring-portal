@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventDTO {
+public class EventWithStages {
     private Long eventId;
     private String eventName;
     private List<EventStagesDTO> stages;

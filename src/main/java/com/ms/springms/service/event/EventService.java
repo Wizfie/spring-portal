@@ -6,6 +6,7 @@ import com.ms.springms.entity.Step;
 import com.ms.springms.model.event.EventWithSteps;
 import com.ms.springms.repository.event.EventRepository;
 import com.ms.springms.repository.event.StepRepository;
+import com.ms.springms.service.team.TeamMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,10 @@ public class EventService {
     private EventRepository eventRepository;
 
     @Autowired
-private StepRepository stepRepository;
+    private TeamMemberService teamMemberService;
+
+    @Autowired
+    private StepRepository stepRepository;
 
     public Event createEvent(Event event) {
 
@@ -63,6 +67,7 @@ private StepRepository stepRepository;
             return new EventWithSteps(event, steps);
         }).collect(Collectors.toList());
     }
+
 
 
     public List<Event> getAllAwards(){
