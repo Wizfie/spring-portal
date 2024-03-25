@@ -2,7 +2,6 @@ package com.ms.springms.controller.team;
 
 import com.ms.springms.entity.Team;
 import com.ms.springms.model.team.TeamEventWithMemberDTO;
-import com.ms.springms.model.team.TeamWithMember;
 import com.ms.springms.service.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,20 +29,7 @@ public class TeamController {
         }
     }
 
-    @GetMapping("/get")
-    public List<Team> getTeam() {
-        return teamService.getTeam();
-    }
-
-
-    @GetMapping("/get-all")
-    public ResponseEntity<List<TeamWithMember>> getAllTeam(){
-        List<TeamWithMember> teamWithMembers = teamService.getAllTeam();
-
-         return new ResponseEntity<>(teamWithMembers,HttpStatus.OK);
-    }
-
-    @GetMapping("/get-all")
+    @GetMapping("/with-member")
     public List<TeamEventWithMemberDTO> getAllTeamsWithMembersAndEvents() {
         return teamService.getAllTeamWithEventAndTeamMember();
     }

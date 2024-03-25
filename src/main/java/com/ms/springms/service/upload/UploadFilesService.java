@@ -3,7 +3,7 @@ package com.ms.springms.service.upload;
 import com.ms.springms.entity.EventStages;
 import com.ms.springms.entity.Registration;
 import com.ms.springms.entity.UploadFiles;
-import com.ms.springms.repository.UploadFileRepository;
+import com.ms.springms.repository.files.UploadFileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;

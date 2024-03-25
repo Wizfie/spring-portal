@@ -1,4 +1,4 @@
-package com.ms.springms.repository;
+package com.ms.springms.repository.event;
 
 import com.ms.springms.entity.Registration;
 import org.springframework.data.jpa.repository.JpaRepository;

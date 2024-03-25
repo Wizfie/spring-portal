@@ -1,7 +1,6 @@
 package com.ms.springms.model.registration;
 
 import com.ms.springms.model.event.EventWithStages;
-import com.ms.springms.model.team.TeamWithTeamMembersDTO;
 import com.ms.springms.model.uploads.UploadFilesDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +18,7 @@ public class RegistrationResponseDTO {
     private String registrationStatus;
     private String createdBy;
     private Year createdAt;
-    private TeamWithTeamMembersDTO team;
+    private RegistrationTeamsDTO team;
     private EventWithStages event;
     private List<UploadFilesDTO> uploadFiles; // Menambahkan atribut untuk menyimpan informasi upload files
 

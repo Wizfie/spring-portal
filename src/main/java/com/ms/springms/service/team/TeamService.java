@@ -6,7 +6,6 @@ import com.ms.springms.entity.TeamMember;
 import com.ms.springms.model.event.EventWithTeam;
 import com.ms.springms.model.team.TeamEventWithMemberDTO;
 import com.ms.springms.model.team.TeamMemberDTO;
-import com.ms.springms.model.team.TeamWithMember;
 import com.ms.springms.repository.team.TeamMemberRepository;
 import com.ms.springms.repository.team.TeamRepository;
 import com.ms.springms.service.event.EventService;
@@ -46,15 +45,6 @@ public class TeamService {
     public List<Team> getTeam(){
         return teamRepository.findAll();
     }
-    public List<TeamWithMember> getAllTeam() {
-        List<Team> teams = teamRepository.findAll();
-        return teams.stream().map(team -> {
-            List<TeamMember> members = teamMemberRepository.findByTeamTeamId(team.getTeamId());
-            return new TeamWithMember(team, members);
-
-        }).collect(Collectors.toList());
-    }
-
 
     public List<TeamEventWithMemberDTO> getAllTeamWithEventAndTeamMember(){
         List<Team> teams = teamRepository.findAll();
@@ -88,6 +78,7 @@ public class TeamService {
         teamDTO.setTeamEvent(eventDTOs);
         return teamDTO;
     }
+
 
 
 }

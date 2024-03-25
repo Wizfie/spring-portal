@@ -3,14 +3,14 @@ package com.ms.springms.service.registration;
 import com.ms.springms.Exceptions.ResourceNotFoundException;
 import com.ms.springms.entity.*;
 import com.ms.springms.model.event.EventWithStages;
-import com.ms.springms.model.team.TeamWithTeamMembersDTO;
+import com.ms.springms.model.registration.RegistrationTeamsDTO;
 import com.ms.springms.model.uploads.UploadFilesDTO;
 import com.ms.springms.model.event.EventStagesDTO;
 import com.ms.springms.model.registration.RegistrationRequest;
 import com.ms.springms.model.registration.RegistrationResponseDTO;
 import com.ms.springms.model.team.TeamMemberDTO;
-import com.ms.springms.repository.RegistrationRepository;
-import com.ms.springms.repository.UploadFileRepository;
+import com.ms.springms.repository.event.RegistrationRepository;
+import com.ms.springms.repository.files.UploadFileRepository;
 import com.ms.springms.repository.event.EventRepository;
 import com.ms.springms.repository.stage.EventStagesRepository;
 import com.ms.springms.repository.team.TeamMemberRepository;
@@ -76,15 +76,15 @@ public class RegistrationService {
             responseDTO.setCreatedBy(registration.getCreatedBy());
             responseDTO.setCreatedAt(registration.getCreatedAt());
 
-            // Set TeamWithTeamMembersDTO
+            // Set RegistrationTeamsDTO
             Team team = registration.getTeam();
             Event eventTeam = registration.getEvent();
             List<TeamMember> teamMembers = teamMemberRepository.findByTeamAndEvent(team ,eventTeam);
-            TeamWithTeamMembersDTO teamWithTeamMembersDTO = new TeamWithTeamMembersDTO();
-            teamWithTeamMembersDTO.setTeamId(team.getTeamId());
-            teamWithTeamMembersDTO.setTeamName(team.getTeamName());
-            teamWithTeamMembersDTO.setUserId(team.getUserId());
-            teamWithTeamMembersDTO.setTeamMember(convertToTeamMemberDTOList(teamMembers));
+            RegistrationTeamsDTO registrationTeamsDTO = new RegistrationTeamsDTO();
+            registrationTeamsDTO.setTeamId(team.getTeamId());
+            registrationTeamsDTO.setTeamName(team.getTeamName());
+            registrationTeamsDTO.setUserId(team.getUserId());
+            registrationTeamsDTO.setTeamMember(convertToTeamMemberDTOList(teamMembers));
 
             // Set EventWithStages
             Event event = registration.getEvent();
@@ -94,7 +94,7 @@ public class RegistrationService {
             eventWithStages.setEventName(event.getEventName());
             eventWithStages.setStages(convertToEventStagesDTOList(eventStages));
 
-            responseDTO.setTeam(teamWithTeamMembersDTO);
+            responseDTO.setTeam(registrationTeamsDTO);
             responseDTO.setEvent(eventWithStages);
 
             // Ambil semua upload files yang terkait dengan registrasi tertentu
@@ -134,15 +134,15 @@ public class RegistrationService {
                 responseDTO.setCreatedBy(registration.getCreatedBy());
                 responseDTO.setCreatedAt(registration.getCreatedAt());
 
-                // Set TeamWithTeamMembersDTO
+                // Set RegistrationTeamsDTO
                 Team team = registration.getTeam();
                 Event eventTeam = registration.getEvent();
                 List<TeamMember> teamMembers = teamMemberRepository.findByTeamAndEvent(team,eventTeam);
-                TeamWithTeamMembersDTO teamWithTeamMembersDTO = new TeamWithTeamMembersDTO();
-                teamWithTeamMembersDTO.setTeamId(team.getTeamId());
-                teamWithTeamMembersDTO.setTeamName(team.getTeamName());
-                teamWithTeamMembersDTO.setUserId(team.getUserId());
-                teamWithTeamMembersDTO.setTeamMember(convertToTeamMemberDTOList(teamMembers));
+                RegistrationTeamsDTO registrationTeamsDTO = new RegistrationTeamsDTO();
+                registrationTeamsDTO.setTeamId(team.getTeamId());
+                registrationTeamsDTO.setTeamName(team.getTeamName());
+                registrationTeamsDTO.setUserId(team.getUserId());
+                registrationTeamsDTO.setTeamMember(convertToTeamMemberDTOList(teamMembers));
 
                 // Set EventWithStages
                 Event event = registration.getEvent();
@@ -174,7 +174,7 @@ public class RegistrationService {
                 responseDTO.setUploadFiles(registrationUploadFiles);
 
 
-                responseDTO.setTeam(teamWithTeamMembersDTO);
+                responseDTO.setTeam(registrationTeamsDTO);
                 responseDTO.setEvent(eventWithStages);
 
 

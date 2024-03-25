@@ -1,4 +1,4 @@
-package com.ms.springms.repository;
+package com.ms.springms.repository.files;
 
 import com.ms.springms.entity.EventStages;
 import com.ms.springms.entity.Registration;
