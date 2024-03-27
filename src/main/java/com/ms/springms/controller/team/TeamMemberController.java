@@ -28,29 +28,27 @@ public class TeamMemberController {
             return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
         }
     }
-    
-    @DeleteMapping("/{teamMemberId}")
-    public ResponseEntity<?> deleteMember(@PathVariable Long teamMemberId){
-        try {
-            ResponseEntity<?> response  = teamMemberService.deleteMember(teamMemberId);
-            return ResponseEntity.ok().body(response.getBody());
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteMember(@PathVariable Long id) {
+        try {
+            ResponseEntity<?> response = teamMemberService.deleteTeamMember(id);
+            return ResponseEntity.ok().body(response.getBody());
         } catch (Exception e) {
-            return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateTeamMember(@PathVariable("id") Long teamMemberId,
-                                                   @RequestBody UpdateMemberRequest request) {
+    public ResponseEntity<Object> updateTeamMember(@PathVariable Long id, @RequestBody UpdateMemberRequest request) {
         try {
-            Response response = teamMemberService.updateTeamMember(teamMemberId, request);
-            return ResponseEntity.ok().body((response));
+            Response response = teamMemberService.updateTeamMember(id, request);
+            return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Validation failed", e.getMessage()));
+            return ResponseEntity.badRequest().body(new Response("Validation failed", e.getMessage()));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Data tidak di temukan",e.getMessage()));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Data not found", e.getMessage()));
         }
     }
 }

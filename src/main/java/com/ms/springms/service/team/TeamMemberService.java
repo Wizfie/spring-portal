@@ -6,6 +6,7 @@ import com.ms.springms.model.team.UpdateMemberRequest;
 import com.ms.springms.model.utils.Response;
 import com.ms.springms.repository.team.TeamMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -21,29 +22,25 @@ public class TeamMemberService {
     private TeamMemberRepository teamMemberRepository;
 
 
-    public TeamMember createTeamMember(TeamMember teamMember) throws Exception {
-        try {
-            if (teamMember.getMemberName() == null || teamMember.getMemberName().isEmpty()) {
-                throw new IllegalArgumentException("Member name cannot be null or empty");
-            }
-
-            return teamMemberRepository.save(teamMember);
-        } catch (Exception ex) {
-            throw new Exception(ex.getMessage());
+    public TeamMember createTeamMember(TeamMember member) throws Exception {
+        if (member.getMemberName() == null || member.getMemberName().isEmpty()) {
+            throw new IllegalArgumentException("Member name cannot be null or empty");
         }
+
+        return teamMemberRepository.save(member);
     }
 
-    public ResponseEntity<?> deleteMember(Long teamMemberId) throws Exception {
+    public ResponseEntity<?> deleteTeamMember(Long teamMemberId) {
         try {
-            TeamMember teamMember = teamMemberRepository.findById(teamMemberId).orElseThrow(() -> new ResourceNotFoundException("Member not found"));
+            TeamMember teamMember = teamMemberRepository.findById(teamMemberId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
 
             teamMemberRepository.delete(teamMember);
-            return ResponseEntity.ok("Member dengan ID : "  + teamMemberId + " Berhasil di hapus");
-
+            return ResponseEntity.ok("Member with ID: " + teamMemberId + " successfully deleted");
         } catch (Exception ex) {
-            throw new Exception(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error deleting member: " + ex.getMessage());
         }
-
     }
 
 
